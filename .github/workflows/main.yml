@@ -10,9 +10,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: List repository contents
-        run: ls -R
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -21,12 +18,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install numpy pandas scikit-learn matplotlib notebook nbconvert wandb opencv-python Pillow
-
-      - name: Ensure dataset exists
-        run: |
-          mkdir -p dataset
-          if [ ! -f dataset/plaksha_Faculty.jpg ]; then echo "Missing dataset/plaksha_Faculty.jpg"; exit 1; fi
-          if [ ! -f dataset/Dr_Shashi_Tharoor.jpg ]; then echo "Missing dataset/Dr_Shashi_Tharoor.jpg"; exit 1; fi
 
       - name: Run Jupyter Notebook
         run: |
@@ -40,5 +31,5 @@ jobs:
           git config --global user.email "github-actions@github.com"
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Mohil-Ahuja/distance_classification.git
           git add executed_notebook.ipynb
-          git commit -m "Automated run of Jupyter Notebook"
+          git commit -m "Automated run of Jupyter Notebook" || echo "No changes to commit"
           git push origin HEAD:main
