@@ -29,7 +29,9 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions@github.com"
+          # Update remote URL to include token for authentication
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Mohil-Ahuja/distance_classification.git
           git add executed_notebook.ipynb
+          # Commit only if there are changes; if not, don't error out
           git commit -m "Automated run of Jupyter Notebook" || echo "No changes to commit"
           git push origin HEAD:main
