@@ -1,11 +1,10 @@
-name: Run Jupyter Notebook and Update WandB
+name: CI and Notebook Execution
 
 on: [push]
 
 jobs:
-  run-notebook:
+  test:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -15,23 +14,28 @@ jobs:
         with:
           python-version: '3.11'
 
-      - name: Install dependencies
+      - name: Install dependencies for tests
+        run: |
+          pip install numpy pandas scikit-learn matplotlib
+
+      - name: Run test script
+        run: python test_script.py
+
+  run-notebook:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies for Notebook
         run: |
           pip install numpy pandas scikit-learn matplotlib notebook nbconvert wandb opencv-python Pillow
 
-      - name: Run Jupyter Notebook
+      - name: Run Jupyter Notebook and Log to WandB
         run: |
           jupyter nbconvert --to notebook --execute distance-classification-experiment.ipynb --output executed_notebook.ipynb
-
-      - name: Commit and Push Updated Notebook
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions@github.com"
-          # Update remote URL to include token for authentication
-          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/Mohil-Ahuja/distance_classification.git
-          git add executed_notebook.ipynb
-          # Commit only if there are changes; if not, don't error out
-          git commit -m "Automated run of Jupyter Notebook" || echo "No changes to commit"
-          git push origin HEAD:main
