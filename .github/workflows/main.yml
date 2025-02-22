@@ -23,6 +23,7 @@ jobs:
         run: |
           jupyter nbconvert --to notebook --execute distance-classification-experiment.ipynb --output executed_notebook.ipynb
 
+
       - name: Commit and Push Updated Notebook
         run: |
           git config --global user.name "github-actions[bot]"
