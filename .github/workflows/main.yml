@@ -1,9 +1,9 @@
-name: Run Tests
+name: Run Jupyter Notebook and Update WandB
 
 on: [push]
 
 jobs:
-  test:
+  run-notebook:
     runs-on: ubuntu-latest
 
     steps:
@@ -17,7 +17,18 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install numpy pandas scikit-learn matplotlib
+          pip install numpy pandas scikit-learn matplotlib notebook nbconvert wandb
 
-      - name: Run test script
-        run: python test_script.py
+      - name: Run Jupyter Notebook
+        run: |
+          jupyter nbconvert --to notebook --execute distance-classification-experiment.ipynb --output executed_notebook.ipynb
+
+      - name: Commit and Push Updated Notebook
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions@github.com"
+          git add executed_notebook.ipynb
+          git commit -m "Automated run of Jupyter Notebook"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
