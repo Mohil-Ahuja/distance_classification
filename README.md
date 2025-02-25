@@ -25,7 +25,7 @@ Ensure you have the following installed:
 ### Installation Steps
 1. **Clone the Repository**
    ```bash
-   git clone https://github.com/your-username/distance_classification.git
+   git clone https://github.com/Mohil-Ahuja/distance_classification.git
    cd distance_classification
 
 
