@@ -63,6 +63,7 @@ The project successfully detected faces, extracted features, and clustered them 
 ## Experiment Tracking with Weights & Biases
 
 This project logs experiment metrics, images, and results to Weights & Biases (WandB) for better tracking and visualization.
+The Kaggle and WandB Jupyter Notebook is named as distance-classification-experiment.ipynb.
 
 ### 1️⃣ WandB Dashboard Overview
 ![WandB Overview](https://raw.githubusercontent.com/Mohil-Ahuja/distance_classification/main/images/Dashboard1.png)
